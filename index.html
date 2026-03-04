@@ -6,100 +6,62 @@
   <title>Robin Rasbury-Cutler — Series Ops Dashboard</title>
   <style>
     :root {
-      --bg: #0f0f13;
-      --surface: #1a1a24;
-      --surface2: #22222f;
-      --border: #2e2e3f;
-      --accent: #c084fc;
-      --gold: #f59e0b;
-      --green: #34d399;
-      --blue: #60a5fa;
-      --red: #f87171;
-      --text: #e2e8f0;
-      --text-dim: #94a3b8;
-      --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --bg:#0f0f13;--surface:#1a1a24;--surface2:#22222f;--border:#2e2e3f;
+      --accent:#c084fc;--gold:#f59e0b;--green:#34d399;--blue:#60a5fa;--red:#f87171;
+      --text:#e2e8f0;--text-dim:#94a3b8;--font:'Inter',system-ui,-apple-system,sans-serif;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg); color: var(--text);
-      font-family: var(--font); font-size: 14px; line-height: 1.6;
-      padding: 32px 24px; max-width: 1200px; margin: 0 auto;
-    }
-    .header {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      margin-bottom: 36px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-    }
-    .header-left h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: #fff; }
-    .header-left h1 span { color: var(--accent); }
-    .header-left p { color: var(--text-dim); font-size: 13px; margin-top: 4px; }
-    .header-right { text-align: right; color: var(--text-dim); font-size: 12px; }
-    .header-right strong { color: var(--text); }
-
-    .summary-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 36px; }
-    .summary-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 16px 18px;
-    }
-    .summary-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 8px; }
-    .summary-card .value { font-size: 28px; font-weight: 700; color: #fff; }
-    .summary-card .sub { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
-
-    .section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 14px; }
-
-    .master-table-wrap {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden; margin-bottom: 36px;
-    }
-    .master-table-wrap .section-title { padding: 16px 20px 0; }
-    table { width: 100%; border-collapse: collapse; }
-    thead tr { background: var(--surface2); border-bottom: 1px solid var(--border); }
-    thead th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
-    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: var(--surface2); }
-    tbody td { padding: 12px 16px; font-size: 13px; vertical-align: middle; }
-    .series-name { font-weight: 600; color: #fff; }
-    .series-name small { display: block; font-weight: 400; font-size: 11px; color: var(--text-dim); margin-top: 1px; }
-
-    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-    .badge-green  { background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.25); }
-    .badge-blue   { background: rgba(96,165,250,0.12); color: var(--blue);  border: 1px solid rgba(96,165,250,0.25); }
-    .badge-purple { background: rgba(192,132,252,0.12); color: var(--accent); border: 1px solid rgba(192,132,252,0.25); }
-    .badge-gold   { background: rgba(245,158,11,0.12); color: var(--gold);  border: 1px solid rgba(245,158,11,0.25); }
-
-    .progress-wrap { display: flex; align-items: center; gap: 10px; }
-    .progress-bar { flex: 1; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; min-width: 80px; }
-    .progress-fill { height: 100%; border-radius: 99px; }
-    .fill-green  { background: var(--green); }
-    .fill-blue   { background: var(--blue); }
-    .fill-purple { background: var(--accent); }
-    .fill-gold   { background: var(--gold); }
-    .progress-label { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
-
-    .series-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 36px; }
-    .series-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    .series-card-header {
-      padding: 16px 20px; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: flex-start;
-    }
-    .series-card-header h3 { font-size: 16px; font-weight: 700; color: #fff; }
-    .series-card-header .meta { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
-    .series-card-header .meta span { color: var(--accent); }
-    .book-row { display: flex; align-items: center; padding: 10px 20px; border-bottom: 1px solid var(--border); gap: 12px; }
-    .book-row:last-child { border-bottom: none; }
-    .book-num { font-size: 11px; font-weight: 700; color: var(--text-dim); width: 20px; flex-shrink: 0; }
-    .book-info { flex: 1; min-width: 0; }
-    .book-title { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .book-sub { font-size: 11px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .book-status { flex-shrink: 0; }
-
-    .pipeline-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 36px; }
-    .pipeline-wrap .section-title { padding: 16px 20px 0; }
-    .priority-high   { color: var(--red); font-weight: 600; font-size: 12px; }
-    .priority-active { color: var(--gold); font-weight: 600; font-size: 12px; }
-    .priority-queued { color: var(--text-dim); font-weight: 600; font-size: 12px; }
-
-    .footer { padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 12px; display: flex; justify-content: space-between; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.6;padding:32px 24px;max-width:1200px;margin:0 auto}
+    .header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+    .header-left h1{font-size:24px;font-weight:700;letter-spacing:-.5px;color:#fff}
+    .header-left h1 span{color:var(--accent)}
+    .header-left p{color:var(--text-dim);font-size:13px;margin-top:4px}
+    .header-right{text-align:right;color:var(--text-dim);font-size:12px}
+    .header-right strong{color:var(--text)}
+    .summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:36px}
+    .summary-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+    .summary-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:8px}
+    .summary-card .value{font-size:28px;font-weight:700;color:#fff}
+    .summary-card .sub{font-size:12px;color:var(--text-dim);margin-top:4px}
+    .section-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-bottom:14px}
+    .master-table-wrap,.pipeline-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:36px}
+    .master-table-wrap .section-title,.pipeline-wrap .section-title{padding:16px 20px 0}
+    table{width:100%;border-collapse:collapse}
+    thead tr{background:var(--surface2);border-bottom:1px solid var(--border)}
+    thead th{padding:10px 16px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim)}
+    tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+    tbody tr:last-child{border-bottom:none}
+    tbody tr:hover{background:var(--surface2)}
+    tbody td{padding:12px 16px;font-size:13px;vertical-align:middle}
+    .series-name{font-weight:600;color:#fff}
+    .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap}
+    .badge-green{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25)}
+    .badge-blue{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.25)}
+    .badge-purple{background:rgba(192,132,252,.12);color:var(--accent);border:1px solid rgba(192,132,252,.25)}
+    .progress-wrap{display:flex;align-items:center;gap:10px}
+    .progress-bar{flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden;min-width:80px}
+    .progress-fill{height:100%;border-radius:99px}
+    .fill-green{background:var(--green)}.fill-blue{background:var(--blue)}.fill-purple{background:var(--accent)}
+    .progress-label{font-size:12px;color:var(--text-dim);white-space:nowrap}
+    .series-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:36px}
+    .series-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .series-card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}
+    .series-card-header h3{font-size:16px;font-weight:700;color:#fff}
+    .series-card-header .meta{font-size:12px;color:var(--text-dim);margin-top:3px}
+    .series-card-header .meta span{color:var(--accent)}
+    .book-row{display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);gap:12px}
+    .book-row:last-child{border-bottom:none}
+    .book-num{font-size:11px;font-weight:700;color:var(--text-dim);width:20px;flex-shrink:0}
+    .book-info{flex:1;min-width:0}
+    .book-title{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .book-sub{font-size:11px;color:var(--text-dim)}
+    .book-status{flex-shrink:0}
+    .omnibus-header{padding:6px 20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);background:rgba(245,158,11,.06);border-bottom:1px solid var(--border)}
+    .omnibus-row{background:rgba(245,158,11,.04)}
+    .priority-high{color:var(--red);font-weight:600;font-size:12px}
+    .priority-active{color:var(--gold);font-weight:600;font-size:12px}
+    .priority-queued{color:var(--text-dim);font-weight:600;font-size:12px}
+    .footer{padding-top:20px;border-top:1px solid var(--border);color:var(--text-dim);font-size:12px;display:flex;justify-content:space-between}
   </style>
 </head>
 <body>
@@ -113,53 +75,26 @@
   </div>
 
   <div class="summary-row">
-    <div class="summary-card">
-      <div class="label">Total Series</div>
-      <div class="value">5</div>
-      <div class="sub">Across 4 pen names</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">Total Books</div>
-      <div class="value">23</div>
-      <div class="sub">Across all series</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">Books Complete</div>
-      <div class="value" style="color:var(--green)">14</div>
-      <div class="sub">61% of total</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">Books Remaining</div>
-      <div class="value" style="color:var(--accent)">9</div>
-      <div class="sub">Across 3 active series</div>
-    </div>
+    <div class="summary-card"><div class="label">Total Series</div><div class="value">5</div><div class="sub">Across 4 pen names</div></div>
+    <div class="summary-card"><div class="label">Total Books</div><div class="value">23</div><div class="sub">Across all series</div></div>
+    <div class="summary-card"><div class="label">Books Complete</div><div class="value" style="color:var(--green)">14</div><div class="sub">60% of total</div></div>
+    <div class="summary-card"><div class="label">Books Remaining</div><div class="value" style="color:var(--accent)">9</div><div class="sub">Across active series</div></div>
   </div>
 
   <div class="master-table-wrap">
     <div class="section-title">Master Series Roster</div>
     <table>
-      <thead>
-        <tr>
-          <th>Series</th>
-          <th>Pen Name</th>
-          <th>Imprint</th>
-          <th>Genre</th>
-          <th>Progress</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Series</th><th>Pen Name</th><th>Imprint</th><th>Genre</th><th>Progress</th><th>Status</th></tr></thead>
       <tbody>
         <tr>
           <td><div class="series-name">Wolves of Blackpine</div></td>
           <td style="color:var(--text-dim)">River Tatum</td>
           <td style="color:var(--text-dim)">Florid Romance</td>
           <td style="color:var(--text-dim)">Shifter Romance</td>
-          <td>
-            <div class="progress-wrap">
-              <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
-              <span class="progress-label">4 / 4</span>
-            </div>
-          </td>
+          <td><div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
+            <span class="progress-label">4 / 4</span>
+          </div></td>
           <td><span class="badge badge-green">✓ Complete</span></td>
         </tr>
         <tr>
@@ -167,12 +102,10 @@
           <td style="color:var(--text-dim)">Robin Cutler</td>
           <td style="color:var(--text-dim)">Florid Romance</td>
           <td style="color:var(--text-dim)">Vampire/F1/Celebrity Romance</td>
-          <td>
-            <div class="progress-wrap">
-              <div class="progress-bar"><div class="progress-fill fill-blue" style="width:17%"></div></div>
-              <span class="progress-label">1 / 6</span>
-            </div>
-          </td>
+          <td><div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill fill-blue" style="width:16%"></div></div>
+            <span class="progress-label">1 / 6</span>
+          </div></td>
           <td><span class="badge badge-blue">⟳ In Progress</span></td>
         </tr>
         <tr>
@@ -180,40 +113,32 @@
           <td style="color:var(--text-dim)">Kelli Robyns</td>
           <td style="color:var(--text-dim)">Florid Romance</td>
           <td style="color:var(--text-dim)">Victorian Historical Romantasy</td>
-          <td>
-            <div class="progress-wrap">
-              <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
-              <span class="progress-label">4 / 4</span>
-            </div>
-          </td>
+          <td><div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
+            <span class="progress-label">4 / 4</span>
+          </div></td>
           <td><span class="badge badge-green">✓ Complete</span></td>
         </tr>
         <tr>
-          <td>
-            <div class="series-name">Hearts of Ember<small>Kelli Robyns</small></div>
-          </td>
+          <td><div class="series-name">Hearts of Ember</div></td>
           <td style="color:var(--text-dim)">Kelli Robyns</td>
           <td style="color:var(--text-dim)">Florid Romance</td>
           <td style="color:var(--text-dim)">Dragon Epic Romantasy</td>
-          <td>
-            <div class="progress-wrap">
-              <div class="progress-bar"><div class="progress-fill fill-gold" style="width:50%"></div></div>
-              <span class="progress-label">3 / 6</span>
-            </div>
-          </td>
-          <td><span class="badge badge-gold">⟳ In Progress</span></td>
+          <td><div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill fill-blue" style="width:50%"></div></div>
+            <span class="progress-label">3 / 6</span>
+          </div></td>
+          <td><span class="badge badge-blue">⟳ In Progress</span></td>
         </tr>
         <tr>
           <td><div class="series-name">The Unweaving Trilogy</div></td>
           <td style="color:var(--text-dim)">Ariana Bates</td>
           <td style="color:var(--text-dim)">Florid Romance</td>
           <td style="color:var(--text-dim)">Dark Fantasy Romance</td>
-          <td>
-            <div class="progress-wrap">
-              <div class="progress-bar"><div class="progress-fill fill-blue" style="width:67%"></div></div>
-              <span class="progress-label">2 / 3</span>
-            </div>
-          </td>
+          <td><div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill fill-blue" style="width:66%"></div></div>
+            <span class="progress-label">2 / 3</span>
+          </div></td>
           <td><span class="badge badge-blue">⟳ In Progress</span></td>
         </tr>
       </tbody>
@@ -222,8 +147,6 @@
 
   <div class="section-title">Book Rosters</div>
   <div class="series-grid">
-
-    <!-- Wolves of Blackpine -->
     <div class="series-card">
       <div class="series-card-header">
         <div>
@@ -232,13 +155,12 @@
         </div>
         <span class="badge badge-green">✓ Complete</span>
       </div>
-      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Wild Heart</div><div class="book-sub">Cole + Harper · Enemies to lovers</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Restless Wolf</div><div class="book-sub">Jace + Lily · Friends to lovers</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Shadow's Mate</div><div class="book-sub">Marcus + Zara · Opposites attract</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">Finding Home</div><div class="book-sub">Eli + Brooke · Rescue romance</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-    </div>
+      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Wild Heart</div><div class="book-sub">Mar 23, 2026</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Restless Wolf</div><div class="book-sub">Apr 13, 2026</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Shadow's Mate</div><div class="book-sub">May 4, 2026</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">Finding Home</div><div class="book-sub">May 25, 2026</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
 
-    <!-- Intensity -->
+    </div>
     <div class="series-card">
       <div class="series-card-header">
         <div>
@@ -247,15 +169,14 @@
         </div>
         <span class="badge badge-blue">⟳ In Progress</span>
       </div>
-      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Speed of Sound</div><div class="book-sub">Vegas Grand Prix · Triangle ignites</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Night Circuit</div><div class="book-sub">Global F1 season · Truth emerges</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
-      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Blood Money</div><div class="book-sub">Double game · War begins</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
-      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">The Longest Night</div><div class="book-sub">Triangle resolves · Ross + Vale reunite</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
-      <div class="book-row"><div class="book-num">5</div><div class="book-info"><div class="book-title">Dead Air</div><div class="book-sub">Sophie + Dominic · Luminary hunters</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
-      <div class="book-row"><div class="book-num">6</div><div class="book-info"><div class="book-title">Apex</div><div class="book-sub">Vegas redux · Council endgame · HEA</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
-    </div>
+      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Speed of Sound</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Night Circuit</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
+      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Blood Money</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
+      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">The Longest Night</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
+      <div class="book-row"><div class="book-num">5</div><div class="book-info"><div class="book-title">Dead Air</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
+      <div class="book-row"><div class="book-num">6</div><div class="book-info"><div class="book-title">Apex</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
 
-    <!-- The Midnight Society -->
+    </div>
     <div class="series-card">
       <div class="series-card-header">
         <div>
@@ -264,30 +185,28 @@
         </div>
         <span class="badge badge-green">✓ Complete</span>
       </div>
-      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Gaslight</div><div class="book-sub">Eleanor + James · Enemies to lovers</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Corset</div><div class="book-sub">Cecilia + Daniel · Bodyguard romance</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Séance</div><div class="book-sub">Vivian + Dominic · Psychic bond</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">Unmasked</div><div class="book-sub">Isabelle + Nathaniel · Burn it down</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-    </div>
+      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Gaslight</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Corset</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Séance</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">Unmasked</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
 
-    <!-- Hearts of Ember -->
+    </div>
     <div class="series-card">
       <div class="series-card-header">
         <div>
           <h3>Hearts of Ember</h3>
           <div class="meta">Kelli Robyns · Dragon Epic Romantasy · <span>6 books</span></div>
         </div>
-        <span class="badge badge-gold">⟳ In Progress</span>
+        <span class="badge badge-blue">⟳ In Progress</span>
       </div>
-      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Bonded</div><div class="book-sub">The Ember Pact — Trilogy 1</div></div><div class="book-status"><span class="badge badge-green">✓ Published</span></div></div>
-      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Burning</div><div class="book-sub">The Ember Pact — Trilogy 1</div></div><div class="book-status"><span class="badge badge-green">✓ Published</span></div></div>
-      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Becoming</div><div class="book-sub">The Ember Pact — Trilogy 1</div></div><div class="book-status"><span class="badge badge-green">✓ Published</span></div></div>
-      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">Reborn</div><div class="book-sub">The Auralis Covenant — Trilogy 2</div></div><div class="book-status"><span class="badge badge-blue">⟳ In Dev</span></div></div>
-      <div class="book-row"><div class="book-num">5</div><div class="book-info"><div class="book-title">Rekindled</div><div class="book-sub">The Auralis Covenant — Trilogy 2</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
-      <div class="book-row"><div class="book-num">6</div><div class="book-info"><div class="book-title">Reforged</div><div class="book-sub">The Auralis Covenant — Trilogy 2</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
-    </div>
+      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">Bonded</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Published</span></div></div>
+      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Burning</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Published</span></div></div>
+      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">Becoming</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Published</span></div></div>
+      <div class="book-row"><div class="book-num">4</div><div class="book-info"><div class="book-title">Reborn</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-blue">⟳ In Dev</span></div></div>
+      <div class="book-row"><div class="book-num">5</div><div class="book-info"><div class="book-title">Rekindled</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
+      <div class="book-row"><div class="book-num">6</div><div class="book-info"><div class="book-title">Reforged</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-purple">◈ Planning</span></div></div>
 
-    <!-- The Unweaving Trilogy -->
+    </div>
     <div class="series-card">
       <div class="series-card-header">
         <div>
@@ -296,56 +215,43 @@
         </div>
         <span class="badge badge-blue">⟳ In Progress</span>
       </div>
-      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">To Dance with the Devil</div><div class="book-sub">Kora + Damien · Forbidden love · Shadow Realm</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Ashfall Between Us</div><div class="book-sub">Council politics · Damien's sacrifice · Void</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
-      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">The Hollow Light</div><div class="book-sub">Transcendence · New Order · Void reunion</div></div><div class="book-status"><span class="badge badge-blue">⟳ In Dev</span></div></div>
-    </div>
+      <div class="book-row"><div class="book-num">1</div><div class="book-info"><div class="book-title">To Dance with the Devil</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">2</div><div class="book-info"><div class="book-title">Ashfall Between Us</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-green">✓ Done</span></div></div>
+      <div class="book-row"><div class="book-num">3</div><div class="book-info"><div class="book-title">The Hollow Light</div><div class="book-sub">&nbsp;</div></div><div class="book-status"><span class="badge badge-blue">⟳ In Dev</span></div></div>
 
+    </div>
+  </div>
+
+
+  <div class="pipeline-wrap">
+    <div class="section-title">Release Calendar</div>
+    <table>
+      <thead><tr><th>Release Date</th><th>Series</th><th>Book</th><th>Pen Name</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--text);font-weight:600">Mar 23, 2026</td><td><span class="series-name">Wolves of Blackpine</span></td><td style="color:var(--text)">Wild Heart</td><td style="color:var(--text-dim)">River Tatum</td><td><span class="badge badge-green">✓ Done</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:600">Apr 13, 2026</td><td><span class="series-name">Wolves of Blackpine</span></td><td style="color:var(--text)">Restless Wolf</td><td style="color:var(--text-dim)">River Tatum</td><td><span class="badge badge-green">✓ Done</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:600">May 4, 2026</td><td><span class="series-name">Wolves of Blackpine</span></td><td style="color:var(--text)">Shadow's Mate</td><td style="color:var(--text-dim)">River Tatum</td><td><span class="badge badge-green">✓ Done</span></td></tr>
+        <tr><td style="color:var(--text);font-weight:600">May 25, 2026</td><td><span class="series-name">Wolves of Blackpine</span></td><td style="color:var(--text)">Finding Home</td><td style="color:var(--text-dim)">River Tatum</td><td><span class="badge badge-green">✓ Done</span></td></tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="pipeline-wrap">
     <div class="section-title">Pipeline — Next Actions</div>
     <table>
-      <thead>
-        <tr><th>Series</th><th>Next Action</th><th>Priority</th><th>Notes</th></tr>
-      </thead>
+      <thead><tr><th>Series</th><th>Next Action</th><th>Priority</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr>
-          <td><span class="series-name">Wolves of Blackpine</span></td>
-          <td style="color:var(--text)">Publication &amp; Marketing</td>
-          <td><span class="priority-high">🔴 High</span></td>
-          <td style="color:var(--text-dim)">Book 1 release March 23, 2026 · Rapid release through May</td>
-        </tr>
-        <tr>
-          <td><span class="series-name">Intensity</span></td>
-          <td style="color:var(--text)">Book 2 arc planning</td>
-          <td><span class="priority-active">🟡 Active</span></td>
-          <td style="color:var(--text-dim)">Book 1 complete · Night Circuit next</td>
-        </tr>
-        <tr>
-          <td><span class="series-name">Hearts of Ember</span></td>
-          <td style="color:var(--text)">Book 4 beat development</td>
-          <td><span class="priority-active">🟡 Active</span></td>
-          <td style="color:var(--text-dim)">Arc overviews done · Reborn in development</td>
-        </tr>
-        <tr>
-          <td><span class="series-name">The Unweaving Trilogy</span></td>
-          <td style="color:var(--text)">Book 3 prose generation</td>
-          <td><span class="priority-active">🟡 Active</span></td>
-          <td style="color:var(--text-dim)">Books 1–2 complete · The Hollow Light in development</td>
-        </tr>
-        <tr>
-          <td><span class="series-name">The Midnight Society</span></td>
-          <td style="color:var(--text)">Publication &amp; Marketing</td>
-          <td><span class="priority-queued">⚪ Queued</span></td>
-          <td style="color:var(--text-dim)">All 4 books complete</td>
-        </tr>
+        <tr><td><span class="series-name">Wolves of Blackpine</span></td><td style="color:var(--text)">Publication & Marketing</td><td><span class="priority-high">🔴 High</span></td><td style="color:var(--text-dim)">Rapid release Mar–May 2026</td></tr>
+        <tr><td><span class="series-name">Intensity</span></td><td style="color:var(--text)">Book 2 arc planning</td><td><span class="priority-active">🟡 Active</span></td><td style="color:var(--text-dim)">Book 1 complete · Night Circuit next</td></tr>
+        <tr><td><span class="series-name">Hearts of Ember</span></td><td style="color:var(--text)">Book 4 beat development</td><td><span class="priority-active">🟡 Active</span></td><td style="color:var(--text-dim)">Arc overviews done · Reborn in development</td></tr>
+        <tr><td><span class="series-name">The Unweaving Trilogy</span></td><td style="color:var(--text)">Book 3 prose generation</td><td><span class="priority-active">🟡 Active</span></td><td style="color:var(--text-dim)">Books 1–2 complete · The Hollow Light in development</td></tr>
+        <tr><td><span class="series-name">The Midnight Society</span></td><td style="color:var(--text)">Publication & Marketing</td><td><span class="priority-queued">⚪ Queued</span></td><td style="color:var(--text-dim)">All 4 books complete</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="footer">
-    <span>Maintained by ADAM ⚡ · Source: <code>/users/robin/opps/series_overview.md</code></span>
+    <span>Maintained by ADAM ⚡ · Auto-generated from <code>series_data.json</code></span>
     <span>Robin Rasbury-Cutler · LMBPN Publishing</span>
   </div>
 
